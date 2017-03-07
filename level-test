@@ -1,0 +1,27 @@
+第一题
+y<-c(1,0,0,1,1,1,0,1,1)
+p<-numeric(length = 10)
+for(i in 1:length(y)){
+  if(y[i]==1){
+    if(y[i+1]==1){
+      p[i]<-i
+    }
+  }
+}
+p<-p[-which(p==0)]
+
+第二题
+raw <- read.delim("weather2.txt",check.names = F, na.strings = ".",stringsAsFactors = F)
+raw<-data.table(raw)
+raw1<-raw[element=="tmax",lapply(.SD,function(x) max(x,na.rm = T)),.SDcols=-c("year","month","element")]
+raw2<-raw[element=="tmin",lapply(.SD,function(x) min(x,na.rm = T)),.SDcols=-c("year","month","element")]
+delta<-raw1-raw2
+delta[,which(delta==-Inf)]<-NA
+
+第三题
+library(hflights)
+str(hflights)
+head(hflights)
+View(hflights)
+hf<-data.table(hflights)
+ans <- hf[,mean(quantile(ArrDelay,probs = seq(0,1,0.1),na.rm = T)),by=.(UniqueCarrier,Month)]
